@@ -10,6 +10,9 @@ card_matches_fixture = (fixture) ->
 language_matches_fixture = (fixture) ->
   fixtures.matcher parser.language, fixtures.language fixture
 
+legality_matches_fixture = (fixture) ->
+  fixtures.matcher parser.legality, fixtures.legality fixture
+
 parser_builds_index = (func, fixture) ->
   (done) ->
     func fixtures.web('gatherer_index'), (err, obj) ->
@@ -76,3 +79,6 @@ describe 'Parser', ->
     it "can provide a card's language details for a card without translations", language_matches_fixture 'black_lotus'
     it "can provide a card's language details for a card with all translations", language_matches_fixture 'drowned_catacomb'
     it 'can work around Portuguese language bug', language_matches_fixture 'inquisition_of_kozilek'
+
+  describe 'legality parser', ->
+    it "can provide a card's legality details", legality_matches_fixture 'braids_cabal_minion'

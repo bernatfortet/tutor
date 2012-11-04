@@ -16,6 +16,7 @@ web_fixture = (name) -> load_fixture 'web', name, 'html'
 
 exports.card     = coffee_fixture_for 'cards'
 exports.language = coffee_fixture_for 'languages'
+exports.legality = coffee_fixture_for 'legalities'
 exports.web      = web_fixture
 
 exports.matcher = (action, fixture) ->

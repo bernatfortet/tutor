@@ -270,25 +270,16 @@ exports.card = (body, callback, options = {}) ->
   process.nextTick ->
     callback null, data
 
-exports.legality = (body, callback, options = {}) ->
+exports.legality = (body, callback) ->
   $ = cheerio.load body
   ctx = {$, text: text_content}
 
-  id = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_LegalityList_listRepeater_ctl00_ConditionTableData'
-  # row is a <tr> with three <td>s
-  row = $(id).parent()
-
   data = {}
-  # row.length is really checking to see if the selector is matching an element.
-  while (row.length > 0)
-    format = ctx.text row.find('td')[0]
-    legality = ctx.text row.find('td')[1]
-    conditions = ctx.text row.find('td')[2]
-    
-    data[format] =
-      legality: legality
-      conditions: if conditions.length > 0 then [ conditions ] else []
-
+  id = prefix + '_LegalityList_listRepeater_ctl00_ConditionTableData'
+  row = $(id).parent()
+  while row.length
+    [format, legality, conditions] = row.children().map -> ctx.text this
+    data[format] = {legality, conditions: conditions and [conditions] or []}
     row = row.next()
 
   process.nextTick ->
